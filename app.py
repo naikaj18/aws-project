@@ -1,28 +1,12 @@
-#!/usr/bin/env python3
+from aws_cdk import App, Environment
 import os
+from aws_project.faq_stack import FaqStack
 
-import aws_cdk as cdk
+app = App()
+env = Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'),
+                  region=os.getenv('CDK_DEFAULT_REGION'))
 
-from aws_project.aws_project_stack import AwsProjectStack
-
-
-app = cdk.App()
-AwsProjectStack(app, "AwsProjectStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
-
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
-
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
-
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-    )
+FaqStack(app, "FaqDev",  env=env, stage="dev")
+FaqStack(app, "FaqProd", env=env, stage="prod")
 
 app.synth()
