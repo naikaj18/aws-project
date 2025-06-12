@@ -2,7 +2,7 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 import os
-
+# Comment
 # Initialize S3 client and read config from env
 s3 = boto3.client('s3')
 BUCKET_NAME = os.environ['BUCKET_NAME']
