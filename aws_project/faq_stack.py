@@ -57,19 +57,17 @@ class FaqStack(Stack):
         # Alarm for GET Lambda errors
         get_faq_error_alarm = cloudwatch.Alarm(
             self, "GetFaqErrorAlarm",
-            metric=get_faq.metric_errors(),
+            metric=get_faq.metric_errors(period=Duration.minutes(5)),
             threshold=2,
             evaluation_periods=1,
-            period=Duration.minutes(5),
             alarm_description="Alarm if GET Lambda errors exceed 2 in 5 minutes"
         )
 
         # Alarm for POST Lambda errors
         post_faq_error_alarm = cloudwatch.Alarm(
             self, "PostFaqErrorAlarm",
-            metric=post_faq.metric_errors(),
+            metric=post_faq.metric_errors(period=Duration.minutes(5)),
             threshold=2,
             evaluation_periods=1,
-            period=Duration.minutes(5),
             alarm_description="Alarm if POST Lambda errors exceed 2 in 5 minutes"
         )
