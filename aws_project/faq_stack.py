@@ -3,6 +3,8 @@ from aws_cdk import (
     aws_s3 as s3,
     aws_lambda as _lambda,
     aws_apigateway as apigateway,
+    aws_cloudwatch as cloudwatch,
+    Duration
 )
 from constructs import Construct
 
@@ -51,3 +53,21 @@ class FaqStack(Stack):
         faq = api.root.add_resource("faq")
         faq.add_method("GET", apigateway.LambdaIntegration(get_faq))
         faq.add_method("POST", apigateway.LambdaIntegration(post_faq))
+
+        # Alarm for GET Lambda errors
+        get_faq_error_alarm = cloudwatch.Alarm(
+            self, "GetFaqErrorAlarm",
+            metric=get_faq.metric_errors(period=Duration.minutes(5)),
+            threshold=2,
+            evaluation_periods=1,
+            alarm_description="Alarm if GET Lambda errors exceed 2 in 5 minutes"
+        )
+
+        # Alarm for POST Lambda errors
+        post_faq_error_alarm = cloudwatch.Alarm(
+            self, "PostFaqErrorAlarm",
+            metric=post_faq.metric_errors(period=Duration.minutes(5)),
+            threshold=2,
+            evaluation_periods=1,
+            alarm_description="Alarm if POST Lambda errors exceed 2 in 5 minutes"
+        )
