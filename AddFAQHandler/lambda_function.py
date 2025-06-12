@@ -7,7 +7,7 @@ import os
 s3 = boto3.client('s3')
 BUCKET_NAME = os.environ['BUCKET_NAME']
 FAQ_FILE    = os.environ.get('FAQ_FILE', 'faq.json')
-
+# Adding a line to dev to check if CI/CD is working and promoting it to PROD
 def lambda_handler(event, context):
     try:
         # 1. Parse the incoming JSON body
